@@ -70,11 +70,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_MOVE] = LAYOUT(
-  KC_ESC,   KC_1,      KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
-  KC_TAB ,  KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                            XXXXXXX, KC_HOME, KC_END,  KC_DEL,  KC_ESC,  KC_PSCR,
-  _______,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, KC_INS ,
+  KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
+  KC_TAB ,  KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                           XXXXXXX, KC_HOME, KC_END,  KC_DEL,  KC_ESC,  KC_PSCR,
+  _______,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                           KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, KC_INS ,
   _______,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,    _______,     _______,  XXXXXXX, KC_PGDN, KC_PGUP, XXXXXXX, KC_ESC, _______,
-                             _______, _______, _______,  _______,       _______,  _______, _______, XXXXXXX
+                            _______, _______, _______,  _______,     _______,  _______, _______, XXXXXXX
 ),
 
 /* CTRL
@@ -94,10 +94,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_CTRL] = LAYOUT(
   KC_F1  ,  KC_F2 ,   KC_F3,   KC_F4,   KC_F5,  KC_F6,                    KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  XXXXXXX, KC_BRIU, KC_VOLU, KC_MPLY, KC_MPRV, XXXXXXX,                   KC_F13   KC_F14   KC_F15,  KC_F16,  KC_F17,  KC_F18,
+  XXXXXXX, KC_BRIU, KC_VOLU, KC_MPLY, KC_MPRV, XXXXXXX,                   KC_F13,  KC_F14,  KC_F15,  KC_F16,  KC_F17,  KC_F18,
   KC_LALT, KC_BRID, KC_VOLD, KC_MUTE, KC_MNXT, XXXXXXX,                   XXXXXXX, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX,
-                             _______, _______, _______, _______, _______,  _______, _______, TO(_QUERTY)
+                             _______, _______, _______, _______, _______,  _______, _______, TO(_QWERTY)
 )
 };
 
@@ -114,37 +114,33 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
   return rotation;
 }
 
-void print_top_animation(uint8_t frameNumber, led_t led_state) {
+void print_top_animation(uint8_t frameNumber) {
 
     switch (frameNumber) {
         case 0:
-            oled_write_P(PSTR(" "), false);
+            oled_write_ln_P(PSTR("          *      "), false);
             break;
         case 1:
-            oled_write_P(PSTR("   "), false);
+            oled_write_ln_P(PSTR("         ***     "), false);
             break;
         case 2:
-            oled_write_P(PSTR("     "), false);
+            oled_write_ln_P(PSTR("        ** **    "), false);
             break;
         case 3:
-            oled_write_P(PSTR("       "), false);
+            oled_write_ln_P(PSTR("       **   **   "), false);
             break;
         case 4:
-            oled_write_P(PSTR("         "), false);
+            oled_write_ln_P(PSTR("      **     **  "), false);
             break;
          case 5:
-            oled_write_P(PSTR("           "), false);
+            oled_write_ln_P(PSTR("     **       ** "), false);
             break;
          case 6:
-            oled_write_P(PSTR("             "), false);
+            oled_write_ln_P(PSTR("    **         **"), false);
             break;
        default:
-            oled_write_P(PSTR(" "), false);
+            oled_write_ln_P(PSTR("   **           **"), false);
     }
-
-    oled_write_ln_P(led_state.caps_lock
-            ? PSTR("=////=")
-            : PSTR("=\\\\\\\\="), false);
 }
 
 // When you add source files to SRC in rules.mk, you can use functions.
@@ -154,13 +150,15 @@ void set_keylog(uint16_t keycode, keyrecord_t *record);
 const char *read_keylog(void);
 const char *read_keylogs(void);
 // Animation parameters
-#define FRAME_DURATION 800// How long each frame lasts in milliseconds
-#define POINTER_FRAME_DURATION 600// How long each pointer frame lasts in milliseconds
-#define MAX_FRAME_POS 6
+#define FRAME_DURATION 400// How long each frame lasts in milliseconds
+#define POINTER_FRAME_DURATION 1000// How long each pointer frame lasts in milliseconds
+#define MAX_FRAME_POS 7
 // Animation variables
 uint32_t timer = 0;
 uint8_t current_frame = 0;
 int8_t current_frame_inc = 1;
+uint32_t timer_pointer = 0;
+int8_t current_pointer_frame = 0;
 
 // const char *read_mode_icon(bool swap);
 // const char *read_host_led_state(void);
@@ -170,10 +168,17 @@ int8_t current_frame_inc = 1;
 bool oled_task_user(void) {
   if (is_keyboard_master()) {
     uint16_t time_since_last_frame = timer_elapsed(timer);
-    // Run animation
     if ( time_since_last_frame > FRAME_DURATION) {
         // Set timer to updated time
         timer = timer_read();
+
+        current_pointer_frame = current_pointer_frame ? 0 : 1;
+    }
+
+    uint16_t time_since_last_pointer = timer_elapsed(timer_pointer);
+    if ( time_since_last_pointer > FRAME_DURATION) {
+        // Set timer to updated time
+        timer_pointer = timer_read();
 
         if (current_frame == MAX_FRAME_POS)
             current_frame_inc = -1;
@@ -184,14 +189,14 @@ bool oled_task_user(void) {
         current_frame = (current_frame + current_frame_inc);
     }
 
-    led_t led_state = host_keyboard_led_state();
-    print_top_animation(current_frame, led_state);
+    print_top_animation(current_frame);
 
     // oled_write_P(PSTR("layer: "), false);
     // Switch on current active layer
+    led_t led_state = host_keyboard_led_state();
     switch (get_highest_layer(layer_state)) {
         case _QWERTY :
-            if ( time_since_last_frame > POINTER_FRAME_DURATION)
+            if (current_pointer_frame)
             {
               oled_write_ln_P(led_state.caps_lock
               ? PSTR(" >QWERTY<   SYMBOL")
@@ -208,7 +213,7 @@ bool oled_task_user(void) {
             : PSTR("  move      ctrl"), false);
             break;
         case _SYMBOL :
-            if ( time_since_last_frame > POINTER_FRAME_DURATION)
+            if (current_pointer_frame)
             {
               oled_write_ln_P(led_state.caps_lock
               ? PSTR("  QWERTY   >SYMBOL< ")
@@ -228,7 +233,7 @@ bool oled_task_user(void) {
             oled_write_ln_P(led_state.caps_lock
             ? PSTR("  QWERTY    SYMBOL")
             : PSTR("  qwerty    symbol"), false);
-            if ( time_since_last_frame > POINTER_FRAME_DURATION)
+            if (current_pointer_frame)
             {
               oled_write_ln_P(led_state.caps_lock
               ? PSTR(" >MOVE<     CTRL")
@@ -245,7 +250,7 @@ bool oled_task_user(void) {
             oled_write_ln_P(led_state.caps_lock
             ? PSTR("  QWERTY    SYMBOL")
             : PSTR("  qwerty    symbol"), false);
-            if ( time_since_last_frame > POINTER_FRAME_DURATION)
+            if (current_pointer_frame)
             {
               oled_write_ln_P(led_state.caps_lock
               ? PSTR("  MOVE     >CTRL< ")
@@ -263,14 +268,8 @@ bool oled_task_user(void) {
             oled_write_P(PSTR(":Undefined:"), false);
     }
 
-    print_top_animation(current_frame, led_state);
+    print_top_animation(current_frame);
 
-    // oled_write_ln(read_layer_state(), false);
-    // oled_write_ln(read_keylog(), false);
-    //oled_write_ln(read_keylogs(), false);
-    //oled_write_ln(read_mode_icon(keymap_config.swap_lalt_lgui), false);
-    //oled_write_ln(read_host_led_state(), false);
-    //oled_write_ln(read_timelog(), false);
   } else {
     oled_write(read_logo(), false);
   }
@@ -281,9 +280,6 @@ bool oled_task_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
-#ifdef OLED_ENABLE
-    set_keylog(keycode, record);
-#endif
     // set_timelog();
   }
   return true;
