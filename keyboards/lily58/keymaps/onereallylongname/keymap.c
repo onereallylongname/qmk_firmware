@@ -52,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_CAPS, PT_EXLM, PT_DQUO, PT_HASH, PT_DLR , PT_PERC,                  PT_AMPR, PT_SLSH, PT_LPRN, PT_RPRN, PT_EQL , PT_QUOT,
   KC_LALT, PT_PIPE, PT_AT  , KC_GRV,  PT_LABK, PT_RABK,                  PT_CIRC, PT_AMPR, PT_LCBR, PT_RCBR, PT_ASTR, PT_PLUS,
   _______, PT_MORD, PT_FORD, PT_EURO, PT_SECT, PT_PND, _______, _______, PT_SCLN, PT_COLN, PT_LBRC, PT_RBRC, PT_QUES, KC_RSFT,
-                             _______, _______, _______, _______, _______,  _______, TO(_MOVE), XXXXXXX
+                             _______, _______, _______, _______, _______,  _______, XXXXXXX, TO(_MOVE)
 ),
 /* MOVE
  * ,-----------------------------------------.                    ,-----------------------------------------.
