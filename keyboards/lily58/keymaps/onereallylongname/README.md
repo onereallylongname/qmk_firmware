@@ -10,14 +10,14 @@ The layout consists of 4 layers:
 ### Using the layers
 The layers are meat to be used in two pairs.
 The keyboard starts on the QWERTY layer and uses the MO(SYMBOL) (momentary raise) to access the SYMBOLS layer.
-The Move layer is activated with a tap on the on the MOVE key TO(MOVE) and uses the same key as the SYMBOLS to momentarily access the control layer.
+The Move layer is activated with a tap on the on the MOVE key MO(MOVE) and uses the same key as the SYMBOLS to momentarily access the control layer.
 
 All layer have an APP key (bring up the context menu on windows) and a CODE key which is shortcut to win+1 that I use to open my terminal on windows.
 
 ### Switching layers
 So that you never have to guess in which layer you are the key combinations are unique to jump to and from the move layer.
- * mOVE: Pressing the move key set the MOVE as the current layer;
- * QWERTY: Pressing SYMBOL+MOVE set the QWERTY layer (can thing of it more or less like a SHIFT+MOVE) 
+ * MOVE: Pressing the SYMBOL+MOVE key set the MOVE as the current layer;
+ * QWERTY: Pressing SYMBOL+BACKSPACE set the QWERTY layer. 
 ## Mappings
 
 ```
