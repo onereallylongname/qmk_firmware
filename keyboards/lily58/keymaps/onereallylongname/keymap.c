@@ -58,11 +58,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  | DEL  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | TAB  |   Q  |   W  |   E  |   R  |   T  |                    |      | HOME | END  | DEL  | ESC  | PSCR |
+ * | TAB  |   1  |   2  |   3  |   4  |   5  |                    |      | HOME | END  | DEL  | ESC  | PSCR |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |LSHIFT|   A  |   S  |   D  |   F  |   G  |-------.    ,-------| Left | Down |  Up  |Right |      | INS  |
+ * |LSHIFT|   6  |   7  |   8  |   9  |   0  |-------.    ,-------| Left | Down |  Up  |Right |      | INS  |
  * |------+------+------+------+------+------| QUERTY|    | RGUI  |------+------+------+------+------+------|
- * |LCTRL |  Z   |  X   |  C   |  V   |  B   |-------|    |-------|      | PGDN | PGDU |      | ESC  |RSHIFT|
+ * |LCTRL |  F2  |  F3  |  F4  |  F5  |  F6  |-------|    |-------|      | PGDN | PGDU |      | ESC  |RSHIFT|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *                   | LAlt | LGUI |SYMBOL| /Space  /       \Enter \  | CTRL |BackSP| MOVE |
  *                   |      |      |      |/       /         \      \ |      |      |      |
@@ -71,9 +71,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_MOVE] = LAYOUT(
   KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_DEL,
-  KC_TAB ,  KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                           XXXXXXX, KC_HOME, KC_END,  KC_DEL,  KC_ESC,  KC_PSCR,
-  _______,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                           KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, KC_INS ,
-  _______,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,    _______,     _______,  XXXXXXX, KC_PGDN, KC_PGUP, XXXXXXX, KC_ESC, _______,
+  KC_TAB ,  KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                           XXXXXXX, KC_HOME, KC_END,  KC_DEL,  KC_ESC,  KC_PSCR,
+  _______,  KC_6,   KC_7,    KC_8,    KC_9,    KC_0,                           KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, KC_INS ,
+  _______,  KC_F2,  KC_F3,   KC_F4,   KC_F5,   KC_F6,   _______,     _______,  XXXXXXX, KC_PGDN, KC_PGUP, XXXXXXX, KC_ESC, _______,
                           _______, _______, _______,  _______,     _______,  _______, _______, XXXXXXX
 ),
 
